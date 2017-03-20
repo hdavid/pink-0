@@ -12,7 +12,7 @@ set(PINK_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(PINK_BUILD_DIR ${CMAKE_BINARY_DIR})
 set(PINK_MODULES_DIR ${PINK_ROOT_DIR}/modules)
 
-option(USE_PI_ZERO "Use RaspberryPI Zero shield as user interface" ON)
+option(USE_PI_ZERO_SHIELD "Use RaspberryPI Zero shield as user interface" ON)
 option(USE_WEBSOCKET "Use the WebSocket based user interface" ON)
 
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
@@ -126,7 +126,7 @@ set(
     src/ui/UserInterface.h
 )
 
-if(USE_PI_ZERO)
+if(USE_PI_ZERO_SHIELD)
   message("   Raspberry PI Zero user interface enabled")
   set(
     src_ui_zero_SRCS
@@ -145,7 +145,7 @@ if(USE_WEBSOCKET)
   )
 endif()
 
-if(NOT(USE_WEBSOCKET) AND NOT(USE_PI_ZERO))
+if(NOT(USE_WEBSOCKET) AND NOT(USE_PI_ZERO_SHIELD))
   set(
     src_ui_none_SRCS
       src/ui/UserInterfaceNone.h
@@ -189,7 +189,11 @@ if(APPLE)
   target_link_libraries( pink PRIVATE "-framework CoreServices" "-framework CoreFoundation" "-framework AudioUnit" "-framework AudioToolbox" "-framework CoreAudio" Ableton::Link)
   target_link_libraries( pink PRIVATE /usr/local/lib/libportaudio.a)
 else()
-  target_link_libraries( pink PRIVATE portaudio wiringPi Ableton::Link pthread)
+  if (USE_PI_ZERO_SHIELD)
+    target_link_libraries( pink PRIVATE portaudio wiringPi Ableton::Link pthread)
+  else()
+    target_link_libraries( pink PRIVATE portaudio Ableton::Link pthread)
+  endif()
 endif()
 
 

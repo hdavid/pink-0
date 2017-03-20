@@ -72,7 +72,12 @@ if [ $platform == "osx" ];
     brew install cmake
   else
     sudo apt-get update
-    sudo apt-get install -y --force-yes cmake wiringpi
+    if [ $1 == "no-ui" ]
+    then
+      sudo apt-get install -y --force-yes cmake
+    else
+      sudo apt-get install -y --force-yes cmake wiringpi
+    fi
 fi
 
 echo ""
@@ -93,7 +98,6 @@ cd modules/portaudio
 make
 sudo make install
 cd ../../
-echo a
 
 echo ""
 echo ""
@@ -118,10 +122,10 @@ mkdir build
 cd build
 if [ $1 == "no-ui" ]
   then
-    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_PI_ZERO=OFF -DUSE_WEBSOCKET=ON -DJUST_INSTALL_CEREAL=ON ..
+    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_PI_ZERO_SHIELD=OFF -DUSE_WEBSOCKET=ON -DJUST_INSTALL_CEREAL=ON ..
   else
     echo -e "[ \033[1m\033[96mpink\033[m ] Raspberry Pi Zero shield support is enabled ---------------------------"
-    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_PI_ZERO=ON -DUSE_WEBSOCKET=ON -DJUST_INSTALL_CEREAL=ON ..
+    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_PI_ZERO_SHIELD=ON -DUSE_WEBSOCKET=ON -DJUST_INSTALL_CEREAL=ON ..
 fi
 make
 if [ $platform == "linux-rpi" ];
