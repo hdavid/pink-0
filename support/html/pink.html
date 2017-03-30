@@ -49,7 +49,8 @@
 
   </div> <!-- wrapper -->
 
-  <input type="hidden" id="pink-ip-address" value="<?php echo $_SERVER['SERVER_ADDR']; ?>"></input>
+  <input type="hidden" id="pink-ip-address" value=""></input>
+  <script>document.getElementById('pink-ip-address').value = window.location.hostname;</script>
 </body>
 
 </html>
